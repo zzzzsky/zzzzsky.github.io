@@ -228,24 +228,21 @@
       el: '#vcomment',
       appId: 'FiKXlzo1Tj6sejCPAmLhjtG0-MdYXbMMI',
       appKey: 'DyFXKDOYnAPyhAJ47KG6uoXK',
-      placeholder: 'Please leave your footprints',
       avatar: 'monsterid',
-      meta: 'nick,mail,link'.split(','),
-      pageSize: '10',
-      lang: 'zh-CN',
-      recordIP: true,
       serverURLs: '',
-      emojiCDN: '',
       emojiMaps: "",
-      enableQQ: true,
       path: window.location.pathname,
-      requiredFields: ["nick,mail"],
-      visitor: true
+      visitor: true,
+      master: '7c254676d919ba961a3d0ab023fe8b79',
+      tagMeta: ["博主","小伙伴","访客"],
+      placeholder: "建议使用QQ邮箱，评论头像采用QQ头像",
+      verify: true,
+      recordIp: true,
     }, null))
   }
 
   if (typeof Valine === 'function') initValine() 
-  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+  else getScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js').then(initValine)
 }
 
 if ('Valine' === 'Valine' || !false) {
