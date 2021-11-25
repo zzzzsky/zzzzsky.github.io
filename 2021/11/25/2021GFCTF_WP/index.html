@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>2021GFCTF部分RE_WP | zsky's Blog</title><meta name="keywords" content="CTFWP"><meta name="author" content="zsky"><meta name="copyright" content="zsky"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="2021GFCTF  RE_WPwordy去除花指令  123456789addr &#x3D;0X556AE377FD56end &#x3D; 0x0556AE377FE40flag &#x3D; &quot;&quot;for i in range(addr, end, 13):    c &#x3D; get_bytes(i+4, 1)[0]    flag+&#x3D;chr(c)    print(flag)# GFCTF&amp;#123;u">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021GFCTF部分RE_WP">
+<meta property="og:url" content="https://zzzzsky.github.io/2021/11/25/2021GFCTF_WP/index.html">
+<meta property="og:site_name" content="zsky&#39;s Blog">
+<meta property="og:description" content="2021GFCTF  RE_WPwordy去除花指令  123456789addr &#x3D;0X556AE377FD56end &#x3D; 0x0556AE377FE40flag &#x3D; &quot;&quot;for i in range(addr, end, 13):    c &#x3D; get_bytes(i+4, 1)[0]    flag+&#x3D;chr(c)    print(flag)# GFCTF&amp;#123;u">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png">
+<meta property="article:published_time" content="2021-11-25T09:05:00.000Z">
+<meta property="article:modified_time" content="2021-11-25T09:06:08.774Z">
+<meta property="article:author" content="zsky">
+<meta property="article:tag" content="CTFWP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zzzzsky.github.io/2021/11/25/2021GFCTF_WP/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2021GFCTF部分RE_WP',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-25 17:06:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">zsky's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">2021GFCTF部分RE_WP</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-25T09:05:00.000Z" title="发表于 2021-11-25 17:05:00">2021-11-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-25T09:06:08.774Z" title="更新于 2021-11-25 17:06:08">2021-11-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF/">CTF</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="2021GFCTF部分RE_WP"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/11/25/2021GFCTF_WP/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/11/25/2021GFCTF_WP/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="2021GFCTF-RE-WP"><a href="#2021GFCTF-RE-WP" class="headerlink" title="2021GFCTF  RE_WP"></a>2021GFCTF  RE_WP</h1><h2 id="wordy"><a href="#wordy" class="headerlink" title="wordy"></a>wordy</h2><p>去除花指令</p>
+<p><img src="./image-20211125095945784.png" alt="image-20211125095945784"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">addr =<span class="number">0X556AE377FD56</span></span><br><span class="line">end = <span class="number">0x0556AE377FE40</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(addr, end, <span class="number">13</span>):</span><br><span class="line">    c = get_bytes(i+<span class="number">4</span>, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">    flag+=<span class="built_in">chr</span>(c)</span><br><span class="line">    </span><br><span class="line"><span class="built_in">print</span>(flag)</span><br><span class="line"><span class="comment"># GFCTF&#123;u_are2wordy&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="BabyReverse"><a href="#BabyReverse" class="headerlink" title="BabyReverse"></a>BabyReverse</h2><p>IDA打开，去除所有的花指令</p>
+<p><img src="./image-20211125100636917.png" alt="image-20211125100636917"></p>
+<p>直接看下面对flag如何加密的，进入<code>sub_412E10</code>, 发现是SM4加密</p>
+<p><img src="./image-20211125100743339.png" alt="image-20211125100743339"></p>
+<p>而传入的第二个参数是key，即<code>byte_4409c0</code>是key，回到main函数再往上看，发现前面有一个对<code>byte_4409c0</code>类似RC4加密的操作,</p>
+<p>对 <code>byte_4409C0</code>进行交叉引用</p>
+<p><img src="./image-20211125100949459.png" alt="image-20211125100949459"></p>
+<p><img src="./image-20211125101052255.png" alt="image-20211125101052255"></p>
+<p>于是下断点调试来获取key，发现不行，猜测前面是反调试，从main函数头部下断点调试</p>
+<p><img src="./image-20211125101538394.png" alt="image-20211125101538394"></p>
+<p>最终定位到这个函数</p>
+<p><img src="./image-20211125101557018.png" alt="image-20211125101557018"></p>
+<p>采用的是self_mapping技术实现反调试，本质是创建secion的时候设置SEC_NO_CHANGE，映射后不能改变</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/changeofpace/Self-Remapping-Code">Self-Remapping-Code</a></p>
+<blockquote>
+<p>关于这个技术，可以参考下这位大佬的笔记 <a target="_blank" rel="noopener" href="https://jev0n.com/2021/09/23/Self-Remapping.html">https://jev0n.com/2021/09/23/Self-Remapping.html</a></p>
+</blockquote>
+<p>我们直接将<code>call sub_411CE0</code> 的地方nop掉，手动的把<code>byte_4409c0</code>的地方加1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = [  <span class="number">0x07</span>, <span class="number">0xB8</span>, <span class="number">0x0D</span>, <span class="number">0x24</span>, <span class="number">0xB1</span>, <span class="number">0x0C</span>, <span class="number">0x2D</span>, <span class="number">0xC7</span>, <span class="number">0x28</span>, <span class="number">0x2D</span>, </span><br><span class="line">  <span class="number">0xC3</span>, <span class="number">0x61</span>, <span class="number">0x66</span>, <span class="number">0x4F</span>, <span class="number">0x72</span>, <span class="number">0x13</span>]</span><br><span class="line">  </span><br><span class="line">addr = <span class="number">0x04409C0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">16</span>):</span><br><span class="line">    patch_byte(addr+i, a[i]+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;OK&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行起来</p>
+<p><img src="./image-20211125102324766.png" alt="image-20211125102324766"></p>
+<p>得到key为 <code>GF?-&gt;GirlFriend?</code></p>
+<p>提取密文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0D 40 3B 87 A5 66 DA 74 92 7F BB E1 B8 CD EB BC 59 45 1B C0 38 99 AA 22 AA 3F 9D 21 07 4E 81 1F</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://the-x.cn/cryptography/Sm4.aspx">SM4在线解密</a></p>
+<p><img src="./image-20211125102923390.png" alt="image-20211125102923390"></p>
+<p><code>2e69df5961f20aee0897cf1905156344    </code>, 最终得到flag为 <code>GFCTF&#123;2e69df5961f20aee0897cf1905156344&#125;</code></p>
+<h2 id="re-EasyRE-0x00"><a href="#re-EasyRE-0x00" class="headerlink" title="re_EasyRE_0x00"></a>re_EasyRE_0x00</h2><p>IDA打开分析，最关键的是<code>sub_100016A0</code>函数</p>
+<p><img src="./image-20211125151517064.png" alt="image-20211125151517064"></p>
+<p><img src="./image-20211125151806585.png" alt="image-20211125151806585"></p>
+<p>经过分析，发现<code>sub_10001180</code>是解密login.key文件，生成的数据放到V13里面</p>
+<p>然后下面这个地方是将V13处的数据与生成的一些数据进行对比，猜测是机器码的验证</p>
+<p><img src="./image-20211125151922458.png" alt="image-20211125151922458"></p>
+<p>这是V13处的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11 55 66 55 0D 50 51 0C FF 01 80 12 CE A9 08 75 73 65 72 32 33 33 33</span><br></pre></td></tr></table></figure>
+
+<p>最后8个字符是user2333</p>
+<p>将对比的数据也提取出来, 然后结合题目，用户名用admin6677登录，长度是9，整理得</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11 55 66 55 98 FA 9B 59 6F F6 14 8F E9 DA 09 61 64 6D 69 6E 36 36 37 37</span><br></pre></td></tr></table></figure>
+
+<p>我们写脚本，每次运行到对比数据的时候就把v13的数据给他替换掉</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data = [<span class="number">0x11</span>, <span class="number">0x55</span>, <span class="number">0x66</span>, <span class="number">0x55</span>, <span class="number">0x98</span>, <span class="number">0xFA</span>, <span class="number">0x9B</span>, <span class="number">0x59</span>, <span class="number">0x6F</span>, <span class="number">0xF6</span>, <span class="number">0x14</span>, <span class="number">0x8F</span>, <span class="number">0xE9</span>, <span class="number">0xDA</span>, <span class="number">0x09</span>, <span class="number">0x61</span>, <span class="number">0x64</span>, <span class="number">0x6D</span>, <span class="number">0x69</span>, <span class="number">0x6E</span>, <span class="number">0x36</span>, <span class="number">0x36</span>, <span class="number">0x37</span>, <span class="number">0x37</span>]</span><br><span class="line">addr = <span class="number">0x004CB348</span>  <span class="comment"># v13的地址</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    patch_byte(addr+i, data[i])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;OK&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后绕过机器码验证，往下走，来到<code>sub_10001610</code>处</p>
+<p><img src="./image-20211125152844760.png" alt="image-20211125152844760"></p>
+<p>可以发现，这个地方肯定是与服务器通信了，我们直接运行，直接Wireshark抓包</p>
+<p>提取数据</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---&gt; <span class="number">11</span> <span class="number">55</span> <span class="number">66</span> <span class="number">55</span> <span class="number">1</span>a <span class="number">27</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line">    </span><br><span class="line">&lt;--- <span class="number">11</span> <span class="number">55</span> <span class="number">66</span> <span class="number">55</span> <span class="number">66</span> <span class="number">27</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0f</span> <span class="number">00</span> f3 <span class="number">46</span> <span class="number">8</span>a be <span class="number">81</span> <span class="number">62</span> ed <span class="number">36</span> d5 df <span class="number">28</span> dc <span class="number">04</span> <span class="number">8</span>a fd</span><br><span class="line">    </span><br><span class="line">---&gt; <span class="number">11</span> <span class="number">55</span> <span class="number">66</span> <span class="number">55</span> <span class="number">1</span>a <span class="number">27</span> <span class="number">01</span> <span class="number">00</span> <span class="number">40</span> <span class="number">00</span> <span class="number">0</span>e a2 <span class="number">60</span> <span class="number">19</span> <span class="number">1f</span> df <span class="number">39</span> <span class="number">0</span>d bc <span class="number">62</span> <span class="number">48</span> <span class="number">57</span> <span class="number">5</span>a <span class="number">11</span> <span class="number">87</span> <span class="number">78</span> <span class="number">69</span> <span class="number">11</span> <span class="number">03</span> <span class="number">76</span> <span class="number">4b</span> f9 <span class="number">2</span>c <span class="number">1f</span> <span class="number">35</span> fd ff <span class="number">4</span>a b8 d8 <span class="number">63</span> <span class="number">8f</span> b6 b1 f0 cd d3 <span class="number">90</span> <span class="number">2</span>d <span class="number">27</span> <span class="number">05</span> b7 <span class="number">1</span>e <span class="number">01</span> <span class="number">22</span> <span class="number">74</span> <span class="number">91</span> <span class="number">1</span>a a4 <span class="number">53</span> df <span class="number">1</span>d f4 <span class="number">69</span> <span class="number">7</span>d <span class="number">3</span>e <span class="number">29</span> bd d3 <span class="number">30</span> da <span class="number">94</span> a3 <span class="number">03</span></span><br><span class="line">    </span><br><span class="line">&lt;--- <span class="number">11</span> <span class="number">55</span> <span class="number">66</span> <span class="number">55</span> <span class="number">66</span> <span class="number">27</span> <span class="number">01</span> <span class="number">00</span> <span class="number">48</span> <span class="number">00</span> <span class="number">84</span> cb <span class="number">11</span> ef <span class="number">71</span> <span class="number">51</span> <span class="number">30</span> <span class="number">0b</span> b3 d8 c1 <span class="number">22</span> ac c4 ca f1 <span class="number">29</span> <span class="number">12</span> cf <span class="number">79</span> f5 <span class="number">36</span> <span class="number">5f</span> <span class="number">5</span>a <span class="number">5</span>e a8 f5 fa <span class="number">62</span> <span class="number">3</span>c e8 <span class="number">32</span> <span class="number">69</span> d6 a1 <span class="number">54</span> eb <span class="number">1b</span> <span class="number">06</span> <span class="number">06</span> b0 <span class="number">68</span> <span class="number">20</span> <span class="number">5</span>a <span class="number">62</span> ea <span class="number">48</span> ec <span class="number">8</span>a <span class="number">3</span>d <span class="number">5</span>c <span class="number">40</span> d0 a8 <span class="number">03</span> <span class="number">94</span> <span class="number">6</span>a <span class="number">2</span>e b7 f0 e4 <span class="number">33</span> aa a0 e3 f2 da f8 a9 cf <span class="number">5</span>d <span class="number">92</span> </span><br></pre></td></tr></table></figure>
+
+<p>重新调试，接着刚才的位置往下分析，看到了RC4的初始化及加密</p>
+<p><img src="./image-20211125155302278.png" alt="image-20211125155302278"></p>
+<p><img src="./image-20211125155318573.png" alt="image-20211125155318573"></p>
+<p>猜测是刚开始，服务器端返回RC4的key，然后后面全部使用RC4加密方式进行加密</p>
+<p><img src="./image-20211125155723782.png" alt="image-20211125155723782"></p>
+<p>根据<code>sub_10001350</code>这个函数可以猜测出数据包的格式, 拿上面服务器返回的key举例子</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11</span> <span class="number">55</span> <span class="number">66</span> <span class="number">55</span> <span class="comment">//标志</span></span><br><span class="line"><span class="number">66</span> <span class="number">27</span>       <span class="comment">//版本</span></span><br><span class="line"><span class="number">00</span> <span class="number">00</span>       <span class="comment">//命令</span></span><br><span class="line"><span class="number">0f</span> <span class="number">00</span>       <span class="comment">//后面数据的长度</span></span><br><span class="line">f3 <span class="number">46</span> <span class="number">8</span>a be <span class="number">81</span> <span class="number">62</span> ed <span class="number">36</span> d5 df <span class="number">28</span> dc <span class="number">04</span> <span class="number">8</span>a fd  <span class="comment">//数据，当命令为0的时候，是RC4的key，命令为1和2的时候，是RC4加密的数据</span></span><br></pre></td></tr></table></figure>
+
+<p>写脚本验证RC4加密</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> ARC4 <span class="keyword">as</span> rc4cipher</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rc4_algorithm</span>(<span class="params">encrypt_or_decrypt, data, key1</span>):</span></span><br><span class="line">    <span class="keyword">if</span> encrypt_or_decrypt == <span class="string">&quot;enc&quot;</span>:</span><br><span class="line">        key = key1</span><br><span class="line">        enc = rc4cipher.new(key)</span><br><span class="line">        res = enc.encrypt(data)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    <span class="keyword">elif</span> encrypt_or_decrypt == <span class="string">&quot;dec&quot;</span>:</span><br><span class="line">        key = key1</span><br><span class="line">        enc = rc4cipher.new(key)</span><br><span class="line">        res = enc.decrypt(data)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">key = binascii.unhexlify(<span class="string">&quot;f3468abe8162ed36d5df28dc048afd&quot;</span>)</span><br><span class="line">data1 = binascii.unhexlify(</span><br><span class="line">    <span class="string">&quot;0ea260191fdf390dbc6248575a118778691103764bf92c1f35fdff4ab8d8638fb6b1f0cdd3902d2705b71e012274911aa453df1df4697d3e29bdd330da94a303&quot;</span>)</span><br><span class="line">m1 = rc4_algorithm(<span class="string">&quot;dec&quot;</span>, data1, key)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data2 = binascii.unhexlify(</span><br><span class="line">    <span class="string">&quot;84cb11ef7151300bb3d8c122acc4caf12912cf79f5365f5a5ea8f5fa623ce83269d6a154eb1b0606b068205a62ea48ec8a3d5c40d0a803946a2eb7f0e433aaa0e3f2daf8a9cf5d92&quot;</span>)</span><br><span class="line">m2 = rc4_algorithm(<span class="string">&quot;dec&quot;</span>, data2, key)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(m1)</span><br><span class="line"><span class="built_in">print</span>(m2)</span><br><span class="line"><span class="comment"># b&#x27;\x8ayqv,\x8eYjj\xdb\xfa\x10\xd6\xa0=\xed!w\xa9/\xdd\xa3\x1a \x05!+\xbd\xd0\xa7\xe7\xd4\xba\t%\xb9N\xeeYR\xdc\xb0Pfq\xae\xe9\xc7\x1eB\xa3\x0eA\xb3\x08\xcf1\xb3\x12\xa5L\xd4`\xcc&#x27;</span></span><br><span class="line"><span class="comment"># b&#x27;\x00\x10\x00\x80B\x00Please update client!\r\nClient version=10010, Server version=10086\x00&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="./image-20211125160348983.png" alt="image-20211125160348983"></p>
+<p>结合login.key，发现当命令为1的时候，向服务器发送的是login.key的数据，然后服务器返回信息</p>
+<p>所以现在需要构造 真正的login.key(11 55 66 55 98 FA 9B 59 6F F6 14 8F E9 DA 09 61 64 6D 69 6E 36 36 37 37)</p>
+<p> 加密后的数据</p>
+<p><code>sub_10001180</code>是解密函数，进去分析,发现是RSA的PKCS#1加密</p>
+<p><img src="./image-20211125160757257.png" alt="image-20211125160757257"></p>
+<p>根据这个结构找到e和n</p>
+<p><img src="./image-20211125161211503.png" alt="image-20211125161211503"></p>
+<p><img src="./image-20211125161253534.png" alt="image-20211125161253534"></p>
+<p>提取出来</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">e: <span class="number">65537</span></span><br><span class="line">n: <span class="number">0xd928b8efe000f72db5bda67a9aa0740defb555b2603736eecd6d01f38ef2fc79</span></span><br><span class="line">分解得到p, q</span><br><span class="line">p = <span class="number">322922590106035145437937724697895880569</span></span><br><span class="line">q = <span class="number">304171468404401467258708275665013611777</span></span><br></pre></td></tr></table></figure>
+
+<p>利用rsatool.py生成private.pem</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python rsatool.py -e 65537 -p 322922590106035145437937724697895880569 -q 304171468404401467258708275665013611777 -o private.pem</span><br></pre></td></tr></table></figure>
+
+<p>利用在线解密网站测试 <a target="_blank" rel="noopener" href="https://the-x.cn/cryptography/Rsa.aspx">https://the-x.cn/cryptography/Rsa.aspx</a></p>
+<p><img src="./image-20211125162250321.png" alt="image-20211125162250321"></p>
+<p>发现解密成功，将构造好的数据进行加密，</p>
+<p><img src="./image-20211125162342644.png" alt="image-20211125162342644"></p>
+<blockquote>
+<p>对于PKCS#1的填充方式可以参考下面2篇文章</p>
+<p><a target="_blank" rel="noopener" href="https://www.cloudcared.cn/3155.html">https://www.cloudcared.cn/3155.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/feng9exe/p/8075447.html">https://www.cnblogs.com/feng9exe/p/8075447.html</a></p>
+</blockquote>
+<p>然后写程序与服务器交互，发现服务器返回命令为2的验证码问题</p>
+<p><code>Question(Send result in uint32_t format, 1 second!): 9540808 * 32 + 509 * 859 = ?</code></p>
+<p>然后利用eval计算数值，构造，返回给服务器，即可得到flag，完整的exp如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> ARC4 <span class="keyword">as</span> rc4cipher</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line">login_key = [<span class="number">0x5D</span>, <span class="number">0x98</span>, <span class="number">0xEE</span>, <span class="number">0x8B</span>, <span class="number">0x68</span>, <span class="number">0x86</span>, <span class="number">0x2F</span>, <span class="number">0x56</span>, <span class="number">0xBA</span>, <span class="number">0xA1</span>, <span class="number">0x27</span>, <span class="number">0x2A</span>, <span class="number">0x68</span>, <span class="number">0x8B</span>, <span class="number">0x19</span>, <span class="number">0x31</span>, <span class="number">0x37</span>, <span class="number">0xC1</span>, <span class="number">0x2B</span>, <span class="number">0x1A</span>, <span class="number">0x80</span>, <span class="number">0x5F</span>, <span class="number">0xAB</span>, <span class="number">0x8C</span>, <span class="number">0xE0</span>, <span class="number">0xE6</span>, <span class="number">0x81</span>, <span class="number">0xDF</span>, <span class="number">0x05</span>, <span class="number">0xC6</span>, <span class="number">0xB1</span>,</span><br><span class="line">             <span class="number">0x2F</span>, <span class="number">0x0E</span>, <span class="number">0x59</span>, <span class="number">0xC8</span>, <span class="number">0x45</span>, <span class="number">0x8A</span>, <span class="number">0x7D</span>, <span class="number">0x83</span>, <span class="number">0x35</span>, <span class="number">0x5F</span>, <span class="number">0x02</span>, <span class="number">0x05</span>, <span class="number">0x10</span>, <span class="number">0x8A</span>, <span class="number">0x35</span>, <span class="number">0x6D</span>, <span class="number">0x0C</span>, <span class="number">0xE8</span>, <span class="number">0x3C</span>, <span class="number">0x9C</span>, <span class="number">0x15</span>, <span class="number">0xD7</span>, <span class="number">0xDA</span>, <span class="number">0xF0</span>, <span class="number">0x96</span>, <span class="number">0x6D</span>, <span class="number">0x2E</span>, <span class="number">0x77</span>, <span class="number">0xEC</span>, <span class="number">0x78</span>, <span class="number">0x3B</span>, <span class="number">0x83</span>, <span class="number">0xB2</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rc4_algorithm</span>(<span class="params">encrypt_or_decrypt, data, key1</span>):</span></span><br><span class="line">    <span class="keyword">if</span> encrypt_or_decrypt == <span class="string">&quot;enc&quot;</span>:</span><br><span class="line">        key = key1</span><br><span class="line">        enc = rc4cipher.new(key)</span><br><span class="line">        res = enc.encrypt(data)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    <span class="keyword">elif</span> encrypt_or_decrypt == <span class="string">&quot;dec&quot;</span>:</span><br><span class="line">        key = key1</span><br><span class="line">        enc = rc4cipher.new(key)</span><br><span class="line">        res = enc.decrypt(data)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_data</span>(<span class="params">_cmd, _len, _data, _key</span>):</span></span><br><span class="line">    sig = [<span class="number">0x11</span>, <span class="number">0x55</span>, <span class="number">0x66</span>, <span class="number">0x55</span>]      <span class="comment"># 签名</span></span><br><span class="line">    banben = [<span class="number">0x66</span>, <span class="number">0x27</span>]               <span class="comment"># 版本</span></span><br><span class="line">    cmd_list = [_cmd, <span class="number">0x00</span>]             <span class="comment"># 命令</span></span><br><span class="line">    data_len_list = [_<span class="built_in">len</span>, <span class="number">0x00</span>]        <span class="comment"># 数据长度</span></span><br><span class="line">    <span class="keyword">if</span> _<span class="built_in">len</span> != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">bytes</span>(sig + banben + cmd_list + data_len_list) + rc4_algorithm(<span class="string">&#x27;enc&#x27;</span>, <span class="built_in">bytes</span>(_data), _key)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bytes</span>(sig + banben + cmd_list + data_len_list)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_captcha</span>(<span class="params">_captcha_str</span>):</span></span><br><span class="line">    m = re.search(</span><br><span class="line">        <span class="string">r&quot;Question\(Send result in uint32_t format, 1 second!\): (.*?) = &quot;</span>, _captcha_str)</span><br><span class="line">    c = <span class="built_in">eval</span>(m.group(<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">return</span> struct.pack(<span class="string">&quot;I&quot;</span>, c)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    address = (<span class="string">&#x27;119.27.179.145&#x27;</span>, <span class="number">10086</span>)</span><br><span class="line"></span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect(address)</span><br><span class="line"></span><br><span class="line">    s.send(get_data(<span class="number">0</span>, <span class="number">0</span>, [], <span class="literal">None</span>))</span><br><span class="line">    data = s.recv(<span class="number">1024</span>)</span><br><span class="line">    rc4_key = data[<span class="number">10</span>:]                 <span class="comment"># 获取RC4密钥</span></span><br><span class="line"></span><br><span class="line">    s.send(get_data(<span class="number">1</span>, <span class="number">0x40</span>, login_key, rc4_key))</span><br><span class="line">    data = s.recv(<span class="number">1024</span>)</span><br><span class="line">    captcha_str = rc4_algorithm(<span class="string">&quot;dec&quot;</span>, data[<span class="number">10</span>:], rc4_key).decode()</span><br><span class="line">    captcha = get_captcha(captcha_str)        <span class="comment"># 计算得到验证码</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Captcha: <span class="subst">&#123;captcha&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 向服务器返回验证码</span></span><br><span class="line">    send_data = get_data(<span class="number">2</span>, <span class="built_in">len</span>(captcha), <span class="built_in">list</span>(captcha), rc4_key)</span><br><span class="line">    s.send(send_data)</span><br><span class="line">    data = s.recv(<span class="number">1024</span>)</span><br><span class="line">    m = rc4_algorithm(<span class="string">&quot;dec&quot;</span>, data[<span class="number">10</span>:], rc4_key)</span><br><span class="line">    <span class="built_in">print</span>(m)</span><br><span class="line">    s.close()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Captcha: b&#x27;\xc84\x06\x03&#x27;</span></span><br><span class="line">    <span class="comment"># b&#x27;\x00\x10\x00\x805\x00flag_0x00 = \x00GFCTF&#123;e8e9071b7a70770bec1f6415c4ed4c1d&#125;\x00&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>得到flag为 <code>GFCTF&#123;e8e9071b7a70770bec1f6415c4ed4c1d&#125;</code></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">zsky</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zzzzsky.github.io/2021/11/25/2021GFCTF_WP/">https://zzzzsky.github.io/2021/11/25/2021GFCTF_WP/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zzzzsky.github.io" target="_blank">zsky's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTFWP/">CTFWP</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/11/17/L3HCTF_WP_RE_/"><img class="next-cover" src="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">L3HCTF 部分RE WP</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/11/11/%E9%99%87%E5%8E%9F%E6%88%98%E7%96%AB2021_RE_WP/" title="陇原战"疫"2021网络安全大赛_RE_WP"><img class="cover" src="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-11</div><div class="title">陇原战"疫"2021网络安全大赛_RE_WP</div></div></a></div><div><a href="/2021/11/12/2021%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81_babyre/" title="2021强网拟态_babyre"><img class="cover" src="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-12</div><div class="title">2021强网拟态_babyre</div></div></a></div><div><a href="/2021/11/17/L3HCTF_WP_RE_/" title="L3HCTF 部分RE WP"><img class="cover" src="https://cdn.dribbble.com/users/198205/screenshots/14368538/media/adb9a7733d44e6e31aacd07182394ae4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-17</div><div class="title">L3HCTF 部分RE WP</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2021GFCTF-RE-WP"><span class="toc-number">1.</span> <span class="toc-text">2021GFCTF  RE_WP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#wordy"><span class="toc-number">1.1.</span> <span class="toc-text">wordy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BabyReverse"><span class="toc-number">1.2.</span> <span class="toc-text">BabyReverse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#re-EasyRE-0x00"><span class="toc-number">1.3.</span> <span class="toc-text">re_EasyRE_0x00</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By zsky</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'FiKXlzo1Tj6sejCPAmLhjtG0-MdYXbMMI',
+      appKey: 'DyFXKDOYnAPyhAJ47KG6uoXK',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: true,
+      master: '7c254676d919ba961a3d0ab023fe8b79',
+      tagMeta: ["博主","小伙伴","访客"],
+      placeholder: "建议使用QQ邮箱，评论头像采用QQ头像",
+      verify: true,
+      recordIp: true,
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
