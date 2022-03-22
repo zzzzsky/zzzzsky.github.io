@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>第2章_二进制文件 | zsky's Blog</title><meta name="keywords" content="pwn,读书笔记,《CTF竞赛权威指南-pwn篇》"><meta name="author" content="zsky"><meta name="copyright" content="zsky"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="看到静态链接和动态链接这里，静态链接和windows上感觉一样，就不写了，感觉这里有个位置无关代码和延迟绑定挺有意思，记录一下 位置无关代码​    在windows平台上，对于DLL文件的全局变量，在DLL加载到内存中后，要是没有加载到对应的位置，需要重定位，这个时候就需要重定位表, 而这里提到了一个位置无关代码的概念，可以加载而无需重定位的代码称为位置无关代码（Position-Indepen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第2章_二进制文件">
+<meta property="og:url" content="https://zzzzsky.github.io/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="zsky&#39;s Blog">
+<meta property="og:description" content="看到静态链接和动态链接这里，静态链接和windows上感觉一样，就不写了，感觉这里有个位置无关代码和延迟绑定挺有意思，记录一下 位置无关代码​    在windows平台上，对于DLL文件的全局变量，在DLL加载到内存中后，要是没有加载到对应的位置，需要重定位，这个时候就需要重定位表, 而这里提到了一个位置无关代码的概念，可以加载而无需重定位的代码称为位置无关代码（Position-Indepen">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.ixiaowai.cn/api/api.php?di2zhang2jinzhiwenjian">
+<meta property="article:published_time" content="2022-03-16T06:20:00.000Z">
+<meta property="article:modified_time" content="2022-03-22T12:26:02.352Z">
+<meta property="article:author" content="zsky">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="《CTF竞赛权威指南-pwn篇》">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.ixiaowai.cn/api/api.php?di2zhang2jinzhiwenjian"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://zzzzsky.github.io/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第2章_二进制文件',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-22 20:26:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://api.ixiaowai.cn/api/api.php?di2zhang2jinzhiwenjian')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">zsky's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">第2章_二进制文件</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-16T06:20:00.000Z" title="发表于 2022-03-16 14:20:00">2022-03-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-22T12:26:02.352Z" title="更新于 2022-03-22 20:26:02">2022-03-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/pwn%E5%AD%A6%E4%B9%A0/">pwn学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第2章_二进制文件"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/#post-comment"><span class="gitalk-comment-count"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>看到静态链接和动态链接这里，静态链接和windows上感觉一样，就不写了，感觉这里有个位置无关代码和延迟绑定挺有意思，记录一下</p>
+<h2 id="位置无关代码"><a href="#位置无关代码" class="headerlink" title="位置无关代码"></a>位置无关代码</h2><p>​    在windows平台上，对于DLL文件的全局变量，在DLL加载到内存中后，要是没有加载到对应的位置，需要重定位，这个时候就需要重定位表, 而这里提到了一个位置无关代码的概念，可以加载而无需重定位的代码称为位置无关代码（Position-Independent Code, PIC），通过GCC传递 -fpic 参数就可以生成PIC。</p>
+<p>1个ELF文件本身，数据段和代码段的相对距离是不变的，因此指令和变量之间的举例就是一个运行时常量，与绝对地址无关，这就是PIC的核心。</p>
+<p>全局偏移量表GOT（Global Offset Table）被拆分为.got节和.got.plt节，可以理解为是个数组，单位是8字节</p>
+<ol>
+<li>.got 不需要延迟绑定，用于保存全局变量引用，加载到内存标记为只读</li>
+<li>.got.plt 需要延迟绑定，保存函数引用，具有读写权限</li>
+</ol>
+<p>写代码测试下 (比书上多加了一个func2，为了测试延迟绑定调用那个_dl_runtime_resolve前的push ,是不是push的func的索引)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.c</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> shared;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> *b)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> *b)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a= <span class="number">100</span>;</span><br><span class="line">    func(&amp;a, &amp;shared);</span><br><span class="line">    func2(&amp;a, &amp;shared);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//func.c</span></span><br><span class="line"><span class="keyword">int</span> shared = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> tmp = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> * a, <span class="keyword">int</span> *b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    tmp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = tmp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">int</span> * a, <span class="keyword">int</span> *b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   	*a = *b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fpic -o func.so func.c</span><br><span class="line">gcc -fno-stack-protector -fno-pie -no-pie -o func.ELF2 main.c ./func.so <span class="comment"># 这里与书上不一样，查到-fno-pie -no-pie 去除地址随机化，要不影响实验</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">╭─ ~/Desktop/testC/dyn                                                                                                               ✔ </span><br><span class="line">╰─ objdump -d -M intel --section=.text func.so | grep -A 10 <span class="string">&quot;&lt;func&gt;&quot;</span></span><br><span class="line">00000000000005ea &lt;func&gt;:</span><br><span class="line"> 5ea:	55                   	push   rbp</span><br><span class="line"> 5eb:	48 89 e5             	mov    rbp,rsp</span><br><span class="line"> 5ee:	48 89 7d f8          	mov    QWORD PTR [rbp-0x8],rdi</span><br><span class="line"> 5f2:	48 89 75 f0          	mov    QWORD PTR [rbp-0x10],rsi</span><br><span class="line"> 5f6:	48 8b 45 f8          	mov    rax,QWORD PTR [rbp-0x8]</span><br><span class="line"> 5fa:	8b 10                	mov    edx,DWORD PTR [rax]</span><br><span class="line"> 5fc:	48 8b 05 d5 09 20 00 	mov    rax,QWORD PTR [rip+0x2009d5]        <span class="comment"># 200fd8 &lt;tmp-0x50&gt;</span></span><br><span class="line"> 603:	89 10                	mov    DWORD PTR [rax],edx</span><br><span class="line"> 605:	48 8b 45 f0          	mov    rax,QWORD PTR [rbp-0x10]</span><br><span class="line"> 609:	8b 10                	mov    edx,DWORD PTR [rax]</span><br></pre></td></tr></table></figure>
+
+<p>因为这个地方写的是RIP +0x2009d5， 是一个偏移，而不是一个写死的地址，所以是PIC, 因为RIP其实就是基址+ 固定的偏移，所以不管基址怎么变化，这个地方的RIP + 0X2009E5指向的总是tmp变量， 如下如，这里是IDA动态调试起来的样子。</p>
+<img src="/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/image-20220314210016859.png" class="" title="image-20220314210016859">
+
+<h2 id="延迟绑定"><a href="#延迟绑定" class="headerlink" title="延迟绑定"></a>延迟绑定</h2><p>​        对于调用的别的so中的函数，只有当这个函数真正调用的时候，才往对应地址处写入这个函数的地址，因为如果导入的函数比较多，都在一开始加载地址的话，会影响性能。</p>
+<p>ELF文件通过过程链接表（Procedure Linkage Table, PLT）和GOT表配合来实现延迟绑定。，PLT也是个数组，单位是16字节，PLT[0]是用于跳转到动态链接器，IDA远程动态调试观, 在call func处下断点，观察PLT(指的是.plt节处的数据) 和 GOT(这里指的是.got.plt节处的数据)，整理下来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 下断点位置</span><br><span class="line">.text:0000000000400652 E8 E9 FE FF FF                call    sub_400540    ; func函数</span><br><span class="line"># PLT[0] </span><br><span class="line">.plt:0000000000400520 push    cs:qword_601008</span><br><span class="line">.plt:0000000000400526 jmp     cs:qword_601010</span><br><span class="line"># PLT[1]</span><br><span class="line">.plt:0000000000400530 jmp     cs:off_601018</span><br><span class="line">.plt:0000000000400536 push    0</span><br><span class="line">.plt:000000000040053B jmp     sub_400520</span><br><span class="line"># PLT[2]</span><br><span class="line">.plt:0000000000400540 jmp     cs:off_601020</span><br><span class="line">.plt:0000000000400546 push    1</span><br><span class="line">.plt:000000000040054B jmp     sub_400520</span><br><span class="line"># GOT[0]</span><br><span class="line">.got.plt:0000000000601000 _GLOBAL_OFFSET_TABLE_ dq offset _DYNAMIC</span><br><span class="line"># GOT[1]</span><br><span class="line">.got.plt:0000000000601008 qword_601008 dq 7F53FD96D170h           ; DATA XREF: sub_400520↑r ;reloc entries</span><br><span class="line"># GOT[2]</span><br><span class="line">.got.plt:0000000000601010 qword_601010 dq 7F53FD7598F0h           ; DATA XREF: sub_400520+6↑r ; _dl_runtime_resolve</span><br><span class="line"># GOT[3]</span><br><span class="line">.got.plt:0000000000601018 off_601018 dq offset sub_400536         ; DATA XREF: .plt:loc_400530↑r		; func2</span><br><span class="line"># GOT[4]</span><br><span class="line">.got.plt:0000000000601020 off_601020 dq offset sub_400546         ; DATA XREF: .plt:loc_400540↑r		; func</span><br></pre></td></tr></table></figure>
+
+<p>然后再在call func2那里下断点，再次观察PLT表和GOT表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000400663 E8 C8 FE FF FF                call    loc_400530  ; func2函数</span><br><span class="line"># GOT[3]</span><br><span class="line">.got.plt:0000000000601018 off_601018 dq offset sub_400536         ; DATA XREF: .plt:loc_400530↑r		; func2</span><br><span class="line"># GOT[4]</span><br><span class="line">got.plt:0000000000601020 off_601020 dq offset func           	; DATA XREF: .plt:loc_400540↑r		; func</span><br></pre></td></tr></table></figure>
+
+<p>可以发现GOT[4]这里已经填入了真正的函数地址，因为前面在调用func的时候,压入了1，而func在GOT表中，在函数的索引这里确实是1（除去其他固定的DYNAMIC， reloc entries， 和dl_runtime_resolve）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.plt:0000000000400546 push    1</span><br><span class="line">.plt:000000000040054B jmp     sub_400520	</span><br></pre></td></tr></table></figure>
+
+<p>在调用func2的时候是push 0 ，我们这里把0改为1，patch下，测试下我们的猜想</p>
+<img src="/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/image-20220314211726468.png" class="" title="image-20220314211726468">
+
+<p>执行，可以发现确实是调用了func函数</p>
+<img src="/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/image-20220314211832466.png" class="" title="image-20220314211832466">
+
+<p>再观察下GOT表，看看有没有变化</p>
+<img src="/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/image-20220314211953201.png" class="" title="image-20220314211953201">
+
+<p>显然，GOT表没有变化，所以猜测成功。</p>
+<p>这里用EXCLE表格来表示下整体的流程</p>
+<img src="/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/image-20220314215401715.png" class="" title="image-20220314215401715"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">zsky</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zzzzsky.github.io/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/">https://zzzzsky.github.io/2022/03/16/%E7%AC%AC2%E7%AB%A0_%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zzzzsky.github.io" target="_blank">zsky's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/pwn/">pwn</a><a class="post-meta__tags" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a><a class="post-meta__tags" href="/tags/%E3%80%8ACTF%E7%AB%9E%E8%B5%9B%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97-pwn%E7%AF%87%E3%80%8B/">《CTF竞赛权威指南-pwn篇》</a></div><div class="post_share"><div class="social-share" data-image="https://api.ixiaowai.cn/api/api.php?di2zhang2jinzhiwenjian" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/21/2022%E8%99%8E%E7%AC%A6CTF_%E9%83%A8%E5%88%86RE_WP/"><img class="prev-cover" src="https://api.ixiaowai.cn/api/api.php?hfctf" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2022_虎符CTF_部分RE_WP</div></div></a></div><div class="next-post pull-right"><a href="/2022/03/03/2022_SUSCTF%E9%83%A8%E5%88%86RE_WP/"><img class="next-cover" src="https://api.ixiaowai.cn/api/api.php?susctf_tree" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2022_SUSCTF_tttree题解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/03/22/%E7%AC%AC4%E7%AB%A0_Linux%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/" title="第4章_Linux安全机制"><img class="cover" src="https://api.ixiaowai.cn/api/api.php?linuxanquanjizhi" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-22</div><div class="title">第4章_Linux安全机制</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E7%BD%AE%E6%97%A0%E5%85%B3%E4%BB%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">位置无关代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A"><span class="toc-number">2.</span> <span class="toc-text">延迟绑定</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By zsky</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'e2ad1e02c5234921e4ca',
+      clientSecret: '5b3decb222a8aed9f74426b2d5a9136ec0a6ce46',
+      repo: 'zzzzsky.github.io',
+      owner: 'zzzzsky',
+      admin: ['zzzzsky'],
+      id: 'ad0a084613ebc91b82b4240748815dfb',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: true,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
