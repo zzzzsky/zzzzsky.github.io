@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>MAS系列-MDA1</title>
+      <link href="/2023/03/17/MDA1/"/>
+      <url>/2023/03/17/MDA1/</url>
+      
+        <content type="html"><![CDATA[<p>分析的样本： 59ed41388826fed419cc3b18d28707491a4fa51309935c4fa016e53c6f2f94bc</p><h1 id="下载样本和收集信息"><a href="#下载样本和收集信息" class="headerlink" title="下载样本和收集信息"></a>下载样本和收集信息</h1><img src="/2023/03/17/MDA1/image-20230317101755-vdiydl0.png" class="" title="image">​<h1 id="分析恶意文档"><a href="#分析恶意文档" class="headerlink" title="分析恶意文档"></a>分析恶意文档</h1><p>通过malwoverview的输出，可以看到恶意文档可能会释放出exe，然后提升权限，HOOK，进程注入等操作。</p><p>使用olevba和oleid来收集更多的信息</p><img src="/2023/03/17/MDA1/image-20230317103803-vcqvuqd.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317104216-lgh9u5g.png" class="" title="image">​<p>从这2个图可以分析出一些事实</p><ul><li>当MS Word被执行的时候，一些代码被执行了</li><li>一个文件可能被写入</li><li>maldoc可能打开了一个文件</li><li>VBA宏负责整个活动</li></ul><p>使用OLEDUMP分析</p><img src="/2023/03/17/MDA1/image-20230317110800-mwia6sz.png" class="" title="image">​<p>发现，有3个宏，16,17,18</p><p>在第11处有大量的数据，猜测是一个VBA resources，可能是加密的资源</p><img src="/2023/03/17/MDA1/image-20230317121944-oc4yjqe.png" class="" title="image">​<p>从上面的输出中可以观察到一些细节</p><ul><li>很显然，代码被混淆了</li><li>split函数返回一个一维数组，它处理UserForm1中的内容，这些内容被分为了4部分，UserForm1内容似乎用!字符分割</li><li>UserForm2正在进行MoveFile操作</li><li>Winmgmt服务是在LocalSystem帐户下的svchost进程内操作的WMI服务，用于执行UserForm2.TextBox5给定的操作。</li><li>UserForm2.Text 6用于创建对ActiveX提供的对象的引用。</li><li>UserForm2.Text 7用于保存内容到二进制文件中</li></ul><img src="/2023/03/17/MDA1/image-20230317161742-ux4l2z6.png" class="" title="image">​<p>所以</p><ul><li><strong>UserForm2.Text1:</strong> C:\Users\Public\Pictures\winword.con</li><li><strong>UserForm2.Text2:</strong> C:\Users\Public\Pictures\winword.exe</li><li><strong>UserForm2.Text3: ​</strong>Scripting.FileSystemObject</li><li><strong>UserForm2.Text4: ​</strong>winmgmts:{impersonationLevel=impersonate}!&quot; &amp; strComputer &amp; “\root\cimv2}</li><li><strong>UserForm2.Text5: ​</strong>Win32_ProcessStartup</li><li><strong>UserForm2.Text6: ​</strong>winmgmts:root\cimv2:Win32_Process</li><li><strong>UserForm2.Text7: ​</strong>ADODB.Stream</li></ul><img src="/2023/03/17/MDA1/image-20230317162302-zcrpury.png" class="" title="image">​<p>所以程序执行了这个winword.exe，而这个程序的二进制数据保存在Macros/UserForm1/o(11)中</p><p>先将其数据保存下来</p><p>‍</p><img src="/2023/03/17/MDA1/image-20230317162713-ro58dbg.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317162822-uofcui8.png" class="" title="image">​<p>将里面的Tahoma去掉，然后写脚本拼接即可</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">filename = <span class="string">&quot;./1233.txt&quot;</span></span><br><span class="line">f = <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">c = f.read()</span><br><span class="line">data_array = c.split(<span class="string">&quot;!&quot;</span>)</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">data_array = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> data_array]</span><br><span class="line"></span><br><span class="line">data_array_bytes = <span class="built_in">bytes</span>(data_array)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;download.bin&quot;</span>, <span class="string">&quot;wb&quot;</span>) </span><br><span class="line">f.write(data_array_bytes)</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Write Success!!&quot;</span>)</span><br></pre></td></tr></table></figure><p>‍</p><img src="/2023/03/17/MDA1/image-20230317163612-ewravup.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317165441-xm3kb47.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317165736-f2c5udg.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317170034-y72j4pf.png" class="" title="image">​<p>可以通过动态调试更容易的从DOCX文件中提取数据。打开的时候，VBS是加密的，用记事本打开，将DPB改为DPX即可</p><img src="/2023/03/17/MDA1/image-20230317182128-ma392e0.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317182050-gt8do7z.png" class="" title="image">​<img src="/2023/03/17/MDA1/image-20230317182215-pvuqvud.png" class="" title="image">​]]></content>
+      
+      
+      <categories>
+          
+          <category> 读书笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MalwareAnalysis </tag>
+            
+            <tag> 恶意文档 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MAS系列1</title>
       <link href="/2023/03/16/MAS%E7%B3%BB%E5%88%971/"/>
       <url>/2023/03/16/MAS%E7%B3%BB%E5%88%971/</url>
